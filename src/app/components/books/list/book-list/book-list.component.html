@@ -1,1 +1,49 @@
-<p>book-list works!</p>
+<app-book-search-input (searchEvent)="receiveSearch()"></app-book-search-input>
+<div *ngIf="!books" class="image-wrap">
+  <div class="img-content">
+    <img src="https://abroadwayeaqui.com.br/wp-content/uploads/2020/03/Livros.jpg" alt="">
+  </div>
+  <div class="overlay"></div>
+  <div class="banner-content">
+    <h1>BEM-VINDO!</h1>
+    <h2 class="title">Este é o Sistemas de Busca de Livros</h2>
+    <p class="intro mb-4">
+      Digite o nome do livro, autor ou editora na campo de pesquisa acima,<br>
+      ou clique no botão abaixo para iniciar uma pesquisa aleatória.
+      <img class="arrow" src="https://3.bp.blogspot.com/-st8RwgLzkXg/Wq24xdTMQwI/AAAAAAAAubg/0-pbC2FQ4SoHORWiUeXbpX5PJF_MPtKBgCLcBGAs/s1600/SETA%2B2.fw.png" alt="Seta de apontamento para a barra de pesquisa">
+    </p>
+    <div class="banner-btn">
+      <a href="" class="btn btn-primary-reverse mr-4">Busca aleatória</a>
+      <a href="/favoritos" class="btn btn-outline-primary-reverse">Ver meus favoritos</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div *ngFor="let book of books" class="col-md-4 mb-3 mb-sm-4" data-aos="fade-up">
+    <div *ngIf="book" class="card h-100 flex-row-reverse flex-sm-row shadow-sm">
+      <div class="card-header card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 text-primary">{{ book.volumeInfo.publisher }}</strong>
+        <h2 class="mb-0">
+          <a class="text-dark" href="#{{ book.id }}" (click)="getBookId(book.id)">{{ book.volumeInfo.title }}</a>
+        </h2>
+        <div class="mb-2 text-muted small">{{ book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'Autor desconhecido' }}</div>
+        <p class="card-text mb-auto"></p>
+        <a class="btn btn-outline-primary btn-sm" href="#{{ book.id }}" (click)="getBookId(book.id)">Ver mais</a>
+      </div>
+      <img class="card-img-right" [src]="book.volumeInfo.imageLinks?.thumbnail || 'assets/img/no-image.png'" alt="Capa do livro">
+    </div>
+  </div>
+</div>
+<app-book-details
+  *ngIf="currentBookId"
+  [bookId]="currentBookId"
+  (close)="resetCurrentBookId()"
+></app-book-details>
+<app-book-pagination
+  *ngIf="books"
+  [maxResults]="maxResults"
+  [startIndex]="startIndex"
+  [totalItems]="totalItems"
+  (paginationEvent)="receiveSearch($event)"
+>
+</app-book-pagination>

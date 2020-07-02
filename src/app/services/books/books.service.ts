@@ -16,32 +16,31 @@ export class BooksService {
 
   constructor(private http: HttpClient, private toastr: ToastrService) { }
 
-  searchBooks(query: string): Observable<Book[]> {
+  searchBooks(query: string, results: number = 12, index: number = 0): Observable<GoogleBooks> {
     const url = this.baseUrl
     const params = new HttpParams()
       .set('q', query)
-      .set('key', environment.GOOGLE_BOOKS_API_KEY)
+      .set('maxResults', `${results}`)
+      .set('startIndex', `${index}`)
+      // .set('key', environment.GOOGLE_BOOKS_API_KEY)
 
     return this.http.get<GoogleBooks>(url, { params })
-      .pipe(
-        map((googleBooks: GoogleBooks) => googleBooks.items),
-        catchError(error => this.handlerError(error))
-      )
+      .pipe(catchError(error => this.handlerError(error)))
   }
 
   getBook(id: string): Observable<Book> {
     const url = `${this.baseUrl}/${id}`
+    console.log('url:', url)
     const params = new HttpParams()
-      .set('key', environment.GOOGLE_BOOKS_API_KEY)
+      // .set('key', environment.GOOGLE_BOOKS_API_KEY)
 
     return this.http.get<Book>(url, { params })
-      .pipe(
-        catchError(error => this.handlerError(error))
-      )
+      .pipe(catchError(error => this.handlerError(error)))
   }
 
   handlerError(error: any): Observable<any> {
-    this.toastr.error(error.message, 'Erro!')
+    const errorMessage = error?.error?.error?.message || error.message
+    this.toastr.error(errorMessage, 'Erro!')
     return EMPTY
   }
 }

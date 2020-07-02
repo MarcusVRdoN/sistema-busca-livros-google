@@ -1,0 +1,17 @@
+<div class="card shadow-sm mb-3 mb-sm-4">
+  <div class="card-header py-3">
+    <div class="d-flex flex-column flex-sm-row">
+      <h1 class="font-weight-bold text-primary text-center text-sm-left mb-3 m-sm-0">
+        <a href="/" title="Voltar para a página inicial">Sis Busca Livros</a>
+      </h1>
+      <div class="d-flex col-sm-7 p-0 px-sm-3 ml-auto">
+        <label for="primary" class="d-flex btn btn-primary mr-2">
+          <input id="primary" class="checkbox mr-2" type="checkbox" [checked]="isBookmarksPage" (change)="togglePage($event)" />
+          <span class="d-none d-sm-flex" [title]="isBookmarksPage ? 'Voltar para a pesquisa geral' : 'Pesquisar nos favoritos'">Favoritos</span>
+          <span class="d-sm-none">💙</span>
+        </label>
+        <input class="form-control" type="search" (keyup)="doSearch($event)" name="pesquisa" placeholder="Busque por título, autor e/ou editora">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<app-book-search-input (searchEvent)="receiveSearch()"></app-book-search-input>
+<h1 *ngIf="!books">Você ainda não adicionou nenhum livro à sua biblioteca de favorito :(</h1>
+<div class="row">
+  <div *ngFor="let book of books" class="col-md-4 mb-3 mb-sm-4" data-aos="fade-up">
+    <div *ngIf="book" class="card h-100 flex-row-reverse flex-sm-row shadow-sm">
+      <div class="card-header card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 text-primary">{{ book.volumeInfo.publisher }}</strong>
+        <h2 class="mb-0">
+          <a class="text-dark" href="/favoritos#{{ book.id }}" (click)="getBookId(book.id)">{{ book.volumeInfo.title }}</a>
+        </h2>
+        <div class="mb-2 text-muted small">{{ book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'Autor desconhecido' }}</div>
+        <p class="card-text mb-auto"></p>
+        <a class="btn btn-outline-primary btn-sm" href="/favoritos#{{ book.id }}" (click)="getBookId(book.id)">Ver mais</a>
+      </div>
+      <img class="card-img-right" [src]="book.volumeInfo.imageLinks?.thumbnail || 'assets/img/no-image.png'" alt="Capa do livro">
+    </div>
+  </div>
+</div>
+<app-book-details
+  *ngIf="currentBookId"
+  [bookId]="currentBookId"
+  (close)="resetCurrentBookId()"
+></app-book-details>
+<app-book-pagination
+  *ngIf="books"
+  [maxResults]="maxResults"
+  [startIndex]="startIndex"
+  [totalItems]="totalItems"
+  (paginationEvent)="receiveSearch($event)"
+>
+</app-book-pagination>

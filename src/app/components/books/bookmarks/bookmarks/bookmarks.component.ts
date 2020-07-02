@@ -1,28 +1,32 @@
+import { SearchService } from './../../../../services/search/search.service';
 import { BooksService } from './../../../../services/books/books.service';
 import { Book } from './../../../../models/book';
-import { SearchService } from './../../../../services/search/search.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-book-list',
-  templateUrl: './book-list.component.html',
-  styleUrls: ['./book-list.component.scss']
+  selector: 'app-bookmarks',
+  templateUrl: './bookmarks.component.html',
+  styleUrls: ['./bookmarks.component.scss']
 })
-export class BookListComponent implements OnInit {
+export class BookmarksComponent implements OnInit {
 
-  books: Book[]
+  books: Book[] = []
   maxResults: number = 12
   startIndex: number = 0
   totalItems: number
   currentBookId: string = ''
+  bookmarkIds: string[]
 
   constructor(private booksService: BooksService, private searchService: SearchService) { }
 
   ngOnInit(): void {
-    // this.booksService.searchBooks('Editora Casa do Código 23', this.maxResults, this.startIndex).subscribe(books => {
-    //   this.books = books.items
-    //   this.totalItems = books.totalItems
-    // })
+    console.log('books:', this.books)
+    this.bookmarkIds = localStorage.getItem('bookmarkIds').split(',')
+    this.bookmarkIds.forEach(id => {
+      this.booksService.getBook(id)
+        .subscribe(book => this.books.push(book))
+    })
+    this.totalItems = this.bookmarkIds.length
   }
 
   get search(): string {

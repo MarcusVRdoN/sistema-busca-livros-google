@@ -1,0 +1,26 @@
+<div [id]="bookId" class="modal-window">
+  <div *ngIf="book" class="modal-window__content">
+    <a title="Close" class="modal-window__close btn-link" (click)="closeModal()">&times;</a>
+    <div class="card h-100 flex-column flex-sm-row shadow-sm m-0">
+      <div class="card-content card-content--left">
+        <img class="card-img-right flex-row" [src]="book.volumeInfo.imageLinks?.thumbnail || 'assets/img/no-image.png'" alt="Capa do livro">
+        <div class="p-2">
+          <button type="button" class="btn btn-primary btn-sm btn-block mt-1" [ngClass]="{ 'btn-danger': inBookmark }" (click)="toggleBookmark()">{{ bookmarkText }}</button>
+          <a class="btn btn-outline-primary btn-sm btn-block mt-3" href="{{ book.accessInfo.webReaderLink }}" target="_blank">Amostra gratuita</a>
+          <a *ngIf="book" class="btn btn-outline-primary btn-sm btn-block mt-3" href="{{ book.saleInfo.buyLink }}" target="_blank">Comprar {{ book.saleInfo.listPrice.amount | currency: 'BRL' }}</a>
+        </div>
+      </div>
+      <div class="card-header card-body d-flex flex-column align-items-start">
+        <div class="w-100 d-flex flex-column align-items-start">
+          <strong class="d-inline-block mb-2 text-primary">{{ book.volumeInfo.publisher }}</strong>
+          <h2 class="mb-0">
+            <a class="text-dark">{{ book.volumeInfo.title }}</a>
+          </h2>
+          <h5 class="text-muted mb-2">{{ book.volumeInfo?.subtitle }}</h5>
+          <div class="mb-2 text-muted small">{{ book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'Autor desconhecido' }}&nbsp; | &nbsp;{{ book.volumeInfo.publishedDate | date: 'dd/MM/yyyy' }}</div>
+          <p class="card-text mb-0">{{ book.volumeInfo.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

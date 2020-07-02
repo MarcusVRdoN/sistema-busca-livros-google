@@ -1,2 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ngx-toastr/toastr";
+@import 'aos/dist/aos.css';
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
